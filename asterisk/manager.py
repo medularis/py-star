@@ -1,10 +1,5 @@
 #!/usr/bin/env python
 # vim: set expandtab shiftwidth=4:
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 """
 Python Interface for Asterisk Manager
 
@@ -56,13 +51,16 @@ Remember all header, response, and event names are case sensitive.
 Not all manager actions are implmented as of yet, feel free to add them
 and submit patches.
 """
+from __future__ import absolute_import, print_function, unicode_literals
 
-import sys,os
-import socket
-import threading
-import re
 from io import StringIO
+import os
+import re
+import socket
+import sys
+import threading
 from time import sleep
+
 from asterisk.compat import Queue, string_types
 
 EOL = '\r\n'

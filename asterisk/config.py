@@ -25,7 +25,6 @@ This module provides parsing functionality for asterisk config files.
       for item in category.items:
          print '   %s = %s' % (item.name, item.value)
 """
-
 import sys
 
 

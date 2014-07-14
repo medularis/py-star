@@ -1,11 +1,11 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from __future__ import print_function
+from __future__ import absolute_import, print_function, unicode_literals
+
+from os import fork, kill, waitpid
+from signal import SIGTERM
 import socket
-from   signal import SIGTERM
-from   os import fork, kill, waitpid
-from   time import sleep
-from   asterisk.compat import string_types
+from time import sleep
+
+from asterisk.compat import string_types
 
 
 class Event(dict):
