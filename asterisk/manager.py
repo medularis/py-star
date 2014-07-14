@@ -485,11 +485,16 @@ class Manager(object):
 # Manager actions
 
     def login(self, username, secret):
-        """Login to the manager, throws ManagerAuthException when login falis"""
+        """Login to the manager, throws ManagerAuthException when login falis.
 
-        cdict = {'Action':'Login'}
-        cdict['Username'] = username
-        cdict['Secret'] = secret
+        :return: action response
+
+        """
+        cdict = {
+            'Action': 'Login',
+            'Username': username,
+            'Secret': secret,
+        }
         response = self.send_action(cdict)
 
         if response.get_header('Response') == 'Error':
@@ -498,58 +503,78 @@ class Manager(object):
         return response
 
     def ping(self):
-        """Send a ping action to the manager"""
-        cdict = {'Action':'Ping'}
-        response = self.send_action(cdict)
-        return response
+        """Send a ping action to the manager.
+
+        :return: action response
+
+        """
+        cdict = {'Action': 'Ping'}
+        return self.send_action(cdict)
 
     def logoff(self):
-        """Logoff from the manager"""
+        """Logoff from the manager.
 
-        cdict = {'Action':'Logoff'}
-        response = self.send_action(cdict)
+        :return: action response
 
-        return response
+        """
+        cdict = {'Action': 'Logoff'}
+        return self.send_action(cdict)
 
     def hangup(self, channel):
-        """Hangup the specified channel"""
+        """Hangup the specified channel.
 
-        cdict = {'Action':'Hangup'}
-        cdict['Channel'] = channel
-        response = self.send_action(cdict)
+        :return: action response
 
-        return response
+        """
+        cdict = {
+            'Action': 'Hangup',
+            'Channel': channel,
+        }
+        return self.send_action(cdict)
 
     def status(self, channel = ''):
-        """Get a status message from asterisk"""
+        """Get a status message from asterisk.
 
-        cdict = {'Action':'Status'}
-        cdict['Channel'] = channel
-        response = self.send_action(cdict)
+        :return: action response
 
-        return response
+        """
+        cdict = {
+            'Action': 'Status',
+            'Channel': channel,
+        }
+        return self.send_action(cdict)
 
     def redirect(self, channel, exten, priority='1', extra_channel='', context=''):
-        """Redirect a channel"""
+        """Redirect a channel.
 
-        cdict = {'Action':'Redirect'}
-        cdict['Channel'] = channel
-        cdict['Exten'] = exten
-        cdict['Priority'] = priority
+        :return: action response
+
+        """
+        cdict = {
+            'Action': 'Redirect',
+            'Channel': channel,
+            'Exten': exten,
+            'Priority': priority,
+        }
         if context:
             cdict['Context'] = context
         if extra_channel:
             cdict['ExtraChannel'] = extra_channel
-        response = self.send_action(cdict)
 
-        return response
+        return self.send_action(cdict)
 
     def originate(self, channel, exten, context='', priority='', timeout='', caller_id='', async=False, account='', variables={}):
-        """Originate a call"""
+        """Originate a call.
 
-        cdict = {'Action':'Originate'}
-        cdict['Channel'] = channel
-        cdict['Exten'] = exten
+        :return: action response
+
+        """
+        cdict = {
+            'Action': 'Originate',
+            'Channel': channel,
+            'Exten': exten,
+        }
+
         if context:
             cdict['Context'] = context
         if priority:
@@ -566,74 +591,88 @@ class Manager(object):
             cdict['Variable'] = ['='.join((str(key), str(value)))
                                  for key, value in variables.items()]
 
-        response = self.send_action(cdict)
-
-        return response
+        return self.send_action(cdict)
 
     def mailbox_status(self, mailbox):
-        """Get the status of the specfied mailbox"""
+        """Get the status of the specfied mailbox.
 
-        cdict = {'Action':'MailboxStatus'}
-        cdict['Mailbox'] = mailbox
-        response = self.send_action(cdict)
+        :return: action response
 
-        return response
+        """
+        cdict = {
+            'Action': 'MailboxStatus',
+            'Mailbox': mailbox,
+        }
+        return self.send_action(cdict)
 
     def command(self, command):
-        """Execute a command"""
+        """Execute a command.
 
-        cdict = {'Action':'Command'}
-        cdict['Command'] = command
-        response = self.send_action(cdict)
+        :return: action response
 
-        return response
+        """
+        cdict = {
+            'Action': 'Command',
+            'Command': command,
+        }
+        return self.send_action(cdict)
 
     def extension_state(self, exten, context):
-        """Get the state of an extension"""
+        """Get the state of an extension.
 
-        cdict = {'Action':'ExtensionState'}
-        cdict['Exten'] = exten
-        cdict['Context'] = context
-        response = self.send_action(cdict)
+        :return: action response
 
-        return response
+        """
+        cdict = {
+            'Action': 'ExtensionState',
+            'Exten': exten,
+            'Context': context,
+        }
+        return self.send_action(cdict)
 
     def playdtmf (self, channel, digit) :
-        """Plays a dtmf digit on the specified channel"""
-        cdict = {'Action':'PlayDTMF'}
-        cdict['Channel'] = channel
-        cdict['Digit'] = digit
-        response = self.send_action(cdict)
+        """Plays a dtmf digit on the specified channel.
 
-        return response
+        :return: action response
+
+        """
+        cdict = {
+            'Action': 'PlayDTMF',
+            'Channel': channel,
+            'Digit': digit,
+        }
+        return self.send_action(cdict)
 
     def absolute_timeout(self, channel, timeout):
-        """Set an absolute timeout on a channel"""
+        """Set an absolute timeout on a channel.
 
-        cdict = {'Action':'AbsoluteTimeout'}
-        cdict['Channel'] = channel
-        cdict['Timeout'] = timeout
-        response = self.send_action(cdict)
+        :return: action response
 
-        return response
+        """
+        cdict = {
+            'Action': 'AbsoluteTimeout',
+            'Channel': channel,
+            'Timeout': timeout,
+        }
+        return self.send_action(cdict)
 
     def mailbox_count(self, mailbox):
-        cdict = {'Action':'MailboxCount'}
-        cdict['Mailbox'] = mailbox
-        response = self.send_action(cdict)
-
-        return response
+        cdict = {
+            'Action': 'MailboxCount',
+            'Mailbox': mailbox,
+        }
+        return self.send_action(cdict)
 
     def sippeers(self):
-        cdict = {'Action' : 'Sippeers'}
-        response = self.send_action(cdict)
-        return response
+        cdict = {'Action': 'Sippeers'}
+        return self.send_action(cdict)
 
     def sipshowpeer(self, peer):
-        cdict = {'Action' : 'SIPshowpeer'}
-        cdict['Peer'] = peer
-        response = self.send_action(cdict)
-        return response
+        cdict = {
+            'Action': 'SIPshowpeer',
+            'Peer': peer,
+        }
+        return self.send_action(cdict)
 
 
 class ManagerException(Exception):
