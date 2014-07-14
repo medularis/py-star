@@ -6,8 +6,8 @@
     We skip versions prior to 2.6 and 3.1, 3.2, see Armin Ronachers blog
     post at http://lucumr.pocoo.org/2013/5/21/porting-to-python-3-redux/
 """
-
 import sys
+
 PY2 = sys.version_info[0] == 2
 
 # Queue in python3 has moved:

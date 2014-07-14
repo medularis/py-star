@@ -18,10 +18,11 @@ pyvr
  'agi_type'     : 'IAX'}
 
 """
-
-import sys, pprint, re
-from types import ListType
+import pprint
+import re
 import signal
+import sys
+from types import ListType
 
 DEFAULT_TIMEOUT = 2000 # 2sec timeout used as default for functions that take timeouts
 DEFAULT_RECORD  = 20000 # 20sec record time
