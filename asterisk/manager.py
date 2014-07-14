@@ -53,13 +53,9 @@ and submit patches.
 """
 from __future__ import absolute_import, print_function, unicode_literals
 
-from io import StringIO
 import os
-import re
 import socket
-import sys
 import threading
-from time import sleep
 
 from asterisk.compat import Queue, string_types
 
