@@ -35,7 +35,7 @@ class Line(object):
         self.line = ''
         self.comment = ''
         line = line.strip()    # I guess we don't preserve indentation
-	self.number = number
+        self.number = number
         parts = line.split(';')
         if len(parts) >= 2:
             self.line = parts[0].strip()
@@ -127,8 +127,8 @@ class Config(object):
         self.categories = []
 
         # load and parse the file
-	self.load()
-	self.parse()
+        self.load()
+        self.parse()
 
     def load(self):
         self.raw_lines = open(self.filename).readlines()
@@ -140,7 +140,7 @@ class Config(object):
 
     def parse(self):
         cat = None
-	num = 0
+        num = 0
         for line in self.raw_lines:
             num += 1
             line = line.strip()

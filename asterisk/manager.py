@@ -250,12 +250,12 @@ class Manager(object):
         # generate the command
         for key, value in cdict.items():
             if isinstance(value, list):
-               for item in value:
-                  item = tuple([key, item])
-                  clist.append('%s: %s' % item)
+                for item in value:
+                    item = tuple([key, item])
+                    clist.append('%s: %s' % item)
             else:
-               item = tuple([key, value])
-               clist.append('%s: %s' % item)
+                item = tuple([key, value])
+                clist.append('%s: %s' % item)
         clist.append(EOL)
         command = EOL.join(clist)
 
@@ -427,8 +427,8 @@ class Manager(object):
 
             # now execute the functions  
             for callback in callbacks:
-               if callback(ev, self):
-                  break
+                if callback(ev, self):
+                    break
 
     def connect(self, host, port=5038):
         """Connect to the manager interface"""
@@ -496,7 +496,7 @@ class Manager(object):
         response = self.send_action(cdict)
         
         if response.get_header('Response') == 'Error':
-           raise ManagerAuthException(response.get_header('Message'))
+            raise ManagerAuthException(response.get_header('Message'))
         
         return response
 
