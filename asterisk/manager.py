@@ -538,8 +538,10 @@ class Manager(object):
         cdict['Channel'] = channel
         cdict['Exten'] = exten
         cdict['Priority'] = priority
-        if context:   cdict['Context']  = context
-        if extra_channel: cdict['ExtraChannel'] = extra_channel
+        if context:
+            cdict['Context'] = context
+        if extra_channel:
+            cdict['ExtraChannel'] = extra_channel
         response = self.send_action(cdict)
 
         return response
@@ -550,13 +552,21 @@ class Manager(object):
         cdict = {'Action':'Originate'}
         cdict['Channel'] = channel
         cdict['Exten'] = exten
-        if context:   cdict['Context']  = context
-        if priority:  cdict['Priority'] = priority
-        if timeout:   cdict['Timeout']  = timeout
-        if caller_id: cdict['CallerID'] = caller_id
-        if async:     cdict['Async']    = 'yes'
-        if account:   cdict['Account']  = account
-        if variables: cdict['Variable'] = ['='.join((str(key), str(value))) for key, value in variables.items()]
+        if context:
+            cdict['Context'] = context
+        if priority:
+            cdict['Priority'] = priority
+        if timeout:
+            cdict['Timeout'] = timeout
+        if caller_id:
+            cdict['CallerID'] = caller_id
+        if async:
+            cdict['Async'] = 'yes'
+        if account:
+            cdict['Account'] = account
+        if variables:
+            cdict['Variable'] = ['='.join((str(key), str(value)))
+                                 for key, value in variables.items()]
 
         response = self.send_action(cdict)
 

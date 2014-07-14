@@ -404,7 +404,8 @@ class AGI:
         in seconds since the UNIX Epoch (Jan 1, 1970 00:00:00).
         """
         escape_digits = self._process_digit_list(escape_digits)
-        if format: format = self._quote(format)
+        if format:
+            format = self._quote(format)
         res = self.execute('SAY DATETIME', seconds, escape_digits, format, zone)['result'][0]
         if res == '0':
             return ''

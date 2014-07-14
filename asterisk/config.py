@@ -151,7 +151,8 @@ class Config(object):
             if not line or line[0] == ';':
                 item = Line(line or '', num)
                 self.lines.append(item)
-                if cat: cat.comments.append(item)
+                if cat:
+                    cat.comments.append(item)
                 continue
             elif line[0] == '[':
                 cat = Category(line, num)
@@ -161,5 +162,6 @@ class Config(object):
             else:
                 item = Item(line, num)
                 self.lines.append(item)
-                if cat: cat.append(item)
+                if cat:
+                    cat.append(item)
                 continue
