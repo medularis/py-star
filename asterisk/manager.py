@@ -304,7 +304,7 @@ class Manager(object):
         wait_for_marker = False
         eolcount = 0
         # loop while we are sill running and connected
-        while self._running.isSet() and self.is_connected():
+        while self.is_running() and self.is_connected():
             try:
                 lines = []
                 for line in self._sock:
@@ -396,7 +396,7 @@ class Manager(object):
 
         try:
             # loop getting messages from the queue
-            while self._running.isSet():
+            while self.is_running():
                 # get/wait for messages
                 data = self._message_queue.get()
 
@@ -428,7 +428,7 @@ class Manager(object):
         """This thread is responsible for dispatching events"""
 
         # loop dispatching events
-        while self._running.isSet():
+        while self.is_running():
             # get/wait for an event
             ev = self._event_queue.get()
 
@@ -485,10 +485,10 @@ class Manager(object):
         """Shutdown the connection to the manager"""
 
         # if we are still running, logout
-        if self._running.isSet() and self.is_connected():
+        if self.is_running() and self.is_connected():
             self.logoff()
 
-        if self._running.isSet():
+        if self.is_running():
             # put None in the message_queue to kill our threads
             self._message_queue.put(None)
 
