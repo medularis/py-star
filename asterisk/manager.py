@@ -244,8 +244,8 @@ class Manager(object):
 
         # set the action id
         if 'ActionID' not in cdict:
-            cdict['ActionID'] = '%s-%04s-%08x' % (self.hostname,
-                self.pid, self.next_seq())
+            cdict['ActionID'] = '%s-%04s-%08x' % (
+                self.hostname, self.pid, self.next_seq())
         clist = []
 
         # generate the command
@@ -320,8 +320,8 @@ class Manager(object):
                         multiline = True
                     # Response: Follows indicates we should wait for end
                     # marker --END COMMAND--
-                    if not multiline and line.startswith('Response') and \
-                        line.split(':', 1)[1].strip() == 'Follows':
+                    if (not multiline and line.startswith('Response') and
+                            line.split(':', 1)[1].strip() == 'Follows'):
                         wait_for_marker = True
                     # same when seeing end of multiline response
                     if multiline and line.startswith('--END COMMAND--'):
@@ -421,8 +421,8 @@ class Manager(object):
             # dispatch our events
 
             # first build a list of the functions to execute
-            callbacks = (self._event_callbacks.get(ev.name, [])
-                      +  self._event_callbacks.get('*', []))
+            callbacks = (self._event_callbacks.get(ev.name, []) +
+                         self._event_callbacks.get('*', []))
 
             # now execute the functions  
             for callback in callbacks:
