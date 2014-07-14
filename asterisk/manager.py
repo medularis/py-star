@@ -216,7 +216,7 @@ class Manager(object):
             self._seq += 1
             self._seqlock.release()
 
-    def send_action(self, cdict={}, **kwargs):
+    def send_action(self, cdict=None, **kwargs):
         """
         Send a command to the manager
 
@@ -233,6 +233,7 @@ class Manager(object):
         Variable: var1=value
         Variable: var2=value
         """
+        cdict = cdict or {}
 
         if not self._connected.isSet():
             raise ManagerException("Not connected")
@@ -563,12 +564,15 @@ class Manager(object):
 
         return self.send_action(cdict)
 
-    def originate(self, channel, exten, context='', priority='', timeout='', caller_id='', async=False, account='', variables={}):
+    def originate(self, channel, exten, context='', priority='', timeout='',
+                  caller_id='', async=False, account='', variables=None):
         """Originate a call.
 
         :return: action response
 
         """
+        variables = variables or {}
+
         cdict = {
             'Action': 'Originate',
             'Channel': channel,
