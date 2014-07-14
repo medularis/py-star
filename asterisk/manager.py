@@ -222,6 +222,10 @@ class Manager(object):
     # backwards compatibilty
     connected = is_connected
 
+    def is_running(self):
+        """Return whether we are running or not."""
+        return self._running.isSet()
+
     def next_seq(self):
         """Return the next number in the sequence, this is used for ActionID"""
         self._seqlock.acquire()
