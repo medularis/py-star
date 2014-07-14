@@ -213,11 +213,14 @@ class Manager(object):
     def __del__(self):
         self.close()
 
-    def connected(self):
+    def is_connected(self):
         """
         Check if we are connected or not.
         """
         return self._connected.isSet()
+
+    # backwards compatibilty
+    connected = is_connected
 
     def next_seq(self):
         """Return the next number in the sequence, this is used for ActionID"""
