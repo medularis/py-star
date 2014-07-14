@@ -97,9 +97,9 @@ function calls leading up to the error, in the order they occurred.
         args, varargs, varkw, locals = inspect.getargvalues(frame)
         call = ''
         if func != '?':
-            call = 'in ' + func + \
-                inspect.formatargvalues(args, varargs, varkw, locals,
-                    formatvalue=lambda value: '=' + pydoc.text.repr(value))
+            call = 'in ' + func + inspect.formatargvalues(
+                args, varargs, varkw, locals,
+                formatvalue=lambda value: '=' + pydoc.text.repr(value))
 
         highlight = {}
 
@@ -152,7 +152,7 @@ class Hook:
     """A hook to replace sys.excepthook that shows tracebacks in HTML."""
 
     def __init__(self, display=1, logdir=None, context=5, file=None,
-                  agi=None):
+                 agi=None):
         self.display = display          # send tracebacks to browser if true
         self.logdir = logdir            # log tracebacks to files if not None
         self.context = context          # number of source code lines per frame
@@ -213,8 +213,8 @@ def enable(agi=None, display=1, logdir=None, context=5):
     The optional argument 'display' can be set to 0 to suppress sending the
     traceback to the browser, and 'logdir' can be set to a directory to cause
     tracebacks to be written to files there."""
-    except_hook =  Hook(display=display, logdir=logdir,
-                          context=context, agi=agi)
+    except_hook = Hook(display=display, logdir=logdir,
+                       context=context, agi=agi)
     sys.excepthook = except_hook
 
     global handler

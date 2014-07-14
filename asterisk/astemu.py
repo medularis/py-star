@@ -18,28 +18,30 @@ class Event(dict):
         The key 'CONTENT' is special, it denotes text that is appended
         to an event (e.g. for testing the output of the command action)
     """
-    sort_order = dict ((x, n) for n, x in enumerate
-        (( 'Event'
-         , 'Response'
-         , 'Username'
-         , 'Privilege'
-         , 'Secret'
-         , 'Command'
-         , 'Channel'
-         , 'ChannelState'
-         , 'ChannelStateDesc'
-         , 'CallerIDNum'
-         , 'CallerIDName'
-         , 'AccountCode'
-         , 'Context'
-         , 'Exten'
-         , 'Reason'
-         , 'Uniqueid'
-         , 'ActionID'
-         , 'OldAccountCode'
-         , 'Cause'
-         , 'Cause-txt'
-        )))
+    sort_order = dict(
+        (x, n) for n, x in enumerate((
+            'Event',
+            'Response',
+            'Username',
+            'Privilege',
+            'Secret',
+            'Command',
+            'Channel',
+            'ChannelState',
+            'ChannelStateDesc',
+            'CallerIDNum',
+            'CallerIDName',
+            'AccountCode',
+            'Context',
+            'Exten',
+            'Reason',
+            'Uniqueid',
+            'ActionID',
+            'OldAccountCode',
+            'Cause',
+            'Cause-txt',
+        ))
+    )
     sort_order ['CONTENT'] = 100000
 
     def sort(self, x):
@@ -80,22 +82,12 @@ class AsteriskEmu(object):
         bind to, resulting port is stored in self.port.
     """
 
-    default_events = dict \
-        ( Login =
-            ( Event
-                ( Response = ('Success',)
-                , Message  = ('Authentication accepted',)
-                )
-            ,
-            )
-        , Logoff =
-            ( Event
-                ( Response = ('Goodbye',)
-                , Message  = ('Thanks for all the fish.',)
-                )
-            ,
-            )
-        )
+    default_events = dict(
+        Login=(Event(Response=('Success', ),
+                     Message=('Authentication accepted', )),),
+        Logoff=(Event(Response=('Goodbye', ),
+                      Message=('Thanks for all the fish.', )),)
+    )
 
     def __init__(self, chatscript, port = 0):
         s = socket.socket (socket.AF_INET, socket.SOCK_STREAM)
