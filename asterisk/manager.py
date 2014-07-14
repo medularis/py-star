@@ -68,7 +68,7 @@ class _Message(object):
         """Check for a header"""
         return hname in self.headers
 
-    def get_header(self, hname, defval = None):
+    def get_header(self, hname, defval=None):
         """Return the specified header"""
         return self.headers.get(hname, defval)
 
@@ -113,27 +113,27 @@ class ManagerMessage(_Message):
             # 'Response', e.g., IAXpeers in Asterisk 1.4.X
             if self.has_header('ActionID'):
                 self.headers['Response'] = 'Generated Header'
-                self.multiheaders ['Response'] = ['Generated Header']
+                self.multiheaders['Response'] = ['Generated Header']
             elif '--END COMMAND--' in self.data:
                 self.headers['Event'] = 'NoClue'
-                self.multiheaders ['Event'] = ['NoClue']
+                self.multiheaders['Event'] = ['NoClue']
             else:
                 self.headers['Response'] = 'Generated Header'
-                self.multiheaders ['Response'] = ['Generated Header']
+                self.multiheaders['Response'] = ['Generated Header']
 
     def parse(self, response):
         """Parse a manager message"""
 
         data = []
-        for n, line in enumerate (response):
+        for n, line in enumerate(response):
             # all valid header lines end in \r\n
-            if not line.endswith ('\r\n'):
+            if not line.endswith('\r\n'):
                 data.extend(response[n:])
                 break
             try:
-                k, v = (x.strip() for x in line.split(':',1))
+                k, v = (x.strip() for x in line.split(':', 1))
                 if k not in self.multiheaders:
-                    self.multiheaders[k]=[]
+                    self.multiheaders[k] = []
                 self.headers[k] = v
                 self.multiheaders[k].append(v)
             except ValueError:
@@ -169,7 +169,7 @@ class Event(_Message):
         return self.headers['Event']
 
     def get_action_id(self):
-        return self.headers.get('ActionID',0000)
+        return self.headers.get('ActionID', 0000)
 
 
 class Manager(object):
@@ -182,7 +182,7 @@ class Manager(object):
         # our hostname
         self.hostname = socket.gethostname()
         # pid -- used for unique naming of ActionID
-        self.pid      = os.getpid ()
+        self.pid = os.getpid()
 
         # our queues
         self._message_queue = Queue()
@@ -274,7 +274,7 @@ class Manager(object):
             errno, reason = err
             raise ManagerSocketException(errno, reason)
 
-        self._reswaiting.insert(0,1)
+        self._reswaiting.insert(0, 1)
         response = self._response_queue.get()
         self._reswaiting.pop(0)
 
@@ -295,7 +295,7 @@ class Manager(object):
         while self._running.isSet() and self._connected.isSet():
             try:
                 lines = []
-                for line in self._sock :
+                for line in self._sock:
                     line = line.decode('utf-8')
                     # check to see if this is the greeting line
                     if not self.title and '/' in line and not ':' in line:
@@ -304,8 +304,8 @@ class Manager(object):
                         # store the version of the manager we are connecting to:
                         self.version = line.split('/')[1].strip()
                         # fake message header
-                        lines.append ('Response: Generated Header\r\n')
-                        lines.append (line)
+                        lines.append('Response: Generated Header\r\n')
+                        lines.append(line)
                         break
                     # If the line is EOL marker we have a complete message.
                     # Some commands are broken and contain a \n\r\n
@@ -313,7 +313,7 @@ class Manager(object):
                     # have such a command where the data ends with the
                     # marker --END COMMAND--, so we ignore embedded
                     # newlines until we see that marker
-                    if line == EOL and not wait_for_marker :
+                    if line == EOL and not wait_for_marker:
                         multiline = False
                         if lines or not self._connected.isSet():
                             break
@@ -442,14 +442,14 @@ class Manager(object):
             raise ManagerException('Already connected to manager')
 
         # make sure host is a string
-        assert isinstance (host, string_types)
+        assert isinstance(host, string_types)
 
         port = int(port)  # make sure port is an int
 
         # create our socket and connect
         try:
             _sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            _sock.connect((host,port))
+            _sock.connect((host, port))
             self._sock = _sock.makefile(mode='rwb')
             _sock.close()
         except socket.error as err:
@@ -540,7 +540,7 @@ class Manager(object):
         }
         return self.send_action(cdict)
 
-    def status(self, channel = ''):
+    def status(self, channel=''):
         """Get a status message from asterisk.
 
         :return: action response
@@ -641,7 +641,7 @@ class Manager(object):
         }
         return self.send_action(cdict)
 
-    def playdtmf (self, channel, digit) :
+    def playdtmf(self, channel, digit):
         """Plays a dtmf digit on the specified channel.
 
         :return: action response
