@@ -7,6 +7,7 @@ from   os import fork, kill, waitpid
 from   time import sleep
 from   asterisk.compat import string_types
 
+
 class Event(dict):
     """ Events are encoded as dicts with a header fieldname to
         content-list map. Normally (for all typical asterisk events) the
@@ -68,6 +69,7 @@ class Event(dict):
     @property
     def headers(self):
         return self
+
 
 class AsteriskEmu(object):
     """ Emulator for asterisk management interface.

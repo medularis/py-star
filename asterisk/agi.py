@@ -29,24 +29,53 @@ DEFAULT_RECORD  = 20000 # 20sec record time
 re_code = re.compile(r'(^\d*)\s*(.*)')
 re_kv = re.compile(r'(?P<key>\w+)=(?P<value>[^\s]+)\s*(?:\((?P<data>.*)\))*')
 
-class AGIException(Exception): pass
-class AGIError(AGIException): pass
 
-class AGIUnknownError(AGIError): pass
+class AGIException(Exception):
+    pass
 
-class AGIAppError(AGIError): pass
+
+class AGIError(AGIException):
+    pass
+
+
+class AGIUnknownError(AGIError):
+    pass
+
+
+class AGIAppError(AGIError):
+    pass
 
 # there are several different types of hangups we can detect
 # they all are derrived from AGIHangup
-class AGIHangup(AGIAppError): pass
-class AGISIGHUPHangup(AGIHangup): pass
-class AGISIGPIPEHangup(AGIHangup): pass
-class AGIResultHangup(AGIHangup): pass
 
-class AGIDBError(AGIAppError): pass
 
-class AGIUsageError(AGIError): pass
-class AGIInvalidCommand(AGIError): pass
+class AGIHangup(AGIAppError):
+    pass
+
+
+class AGISIGHUPHangup(AGIHangup):
+    pass
+
+
+class AGISIGPIPEHangup(AGIHangup):
+    pass
+
+
+class AGIResultHangup(AGIHangup):
+    pass
+
+
+class AGIDBError(AGIAppError):
+    pass
+
+
+class AGIUsageError(AGIError):
+    pass
+
+
+class AGIInvalidCommand(AGIError):
+    pass
+
 
 class AGI:
     """
@@ -54,7 +83,7 @@ class AGI:
     It handles encoding commands to Asterisk and parsing responses from
     Asterisk. 
     """
-    
+
     def __init__(self,stdin=sys.stdin,stdout=sys.stdout,stderr=sys.stderr):
         self.stdin=stdin
         self.stdout=stdout
@@ -96,7 +125,7 @@ class AGI:
         """This function throws AGIHangup if we have recieved a SIGHUP"""
         if self._got_sighup:
             raise AGISIGHUPHangup("Received SIGHUP from Asterisk")
-        
+
     def execute(self, command, *args):
         self.test_hangup()
 
@@ -217,7 +246,7 @@ class AGI:
         res = self.execute('TDD MODE', mode)['result'][0]
         if res == '0':
             raise AGIAppError('Channel %s is not TDD-capable')
-            
+
     def stream_file(self, filename, escape_digits='', sample_offset=0):
         """agi.stream_file(filename, escape_digits='', sample_offset=0) --> digit
         Send the given file, allowing playback to be interrupted by the given
@@ -238,7 +267,7 @@ class AGI:
                 return chr(int(res))
             except:
                 raise AGIError('Unable to convert result to char: %s' % res)
-    
+
     def control_stream_file(self, filename, escape_digits='', skipms=3000, fwd='', rew='', pause=''):
         """
         Send the given file, allowing playback to be interrupted by the given
@@ -367,7 +396,7 @@ class AGI:
                 return chr(int(res))
             except:
                 raise AGIError('Unable to convert result to char: %s' % res)
-    
+
     def say_datetime(self, seconds, escape_digits='', format='', zone=''):
         """agi.say_datetime(seconds, escape_digits='', format='', zone='') --> digit
         Say a given date in the format specfied (see voicemail.conf), returning
@@ -392,7 +421,7 @@ class AGI:
         result = self.execute('GET DATA', filename, timeout, max_digits)
         res, value = result['result']
         return res
-    
+
     def get_option(self, filename, escape_digits='', timeout=0):
         """agi.get_option(filename, escape_digits='', timeout=0) --> digit
         Send the given file, allowing playback to be interrupted by the given
@@ -592,7 +621,7 @@ class AGI:
         res, value = result['result']
         if res == '0':
             raise AGIDBError('Unable to put vaule in databale: family=%s, key=%s, value=%s' % (family, key, value))
-            
+
     def database_del(self, family, key):
         """agi.database_del(family, key) --> None
         Deletes an entry in the Asterisk database for a

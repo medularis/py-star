@@ -36,6 +36,7 @@ import sys
 
 __UNDEF__ = []                          # a special sentinel object
 
+
 def lookup(name, frame, locals):
     """Find the value for a given name in the given environment."""
     if name in locals:
@@ -51,6 +52,7 @@ def lookup(name, frame, locals):
             if hasattr(builtins, name):
                 return 'builtin', getattr(builtins, name)
     return None, __UNDEF__
+
 
 def scanvars(reader, frame, locals):
     """Scan one logical line of Python and look up values of variables used."""
@@ -100,6 +102,7 @@ function calls leading up to the error, in the order they occurred.
                     formatvalue=lambda value: '=' + pydoc.text.repr(value))
 
         highlight = {}
+
         def reader(lnum=[lnum]):
             highlight[lnum[0]] = 1
             try: return linecache.getline(file, lnum[0])
@@ -143,6 +146,7 @@ the original traceback:
 
 %s
 ''' % ''.join(traceback.format_exception(etype, evalue, etb))
+
 
 class Hook:
     """A hook to replace sys.excepthook that shows tracebacks in HTML."""
@@ -194,13 +198,15 @@ class Hook:
                 self.agi.verbose(msg, 4)
             else:
                 self.file.write(msg + '\n')
-        
+
         try:
             self.file.flush()
         except: pass
 
 
 handler = Hook().handle
+
+
 def enable(agi=None, display=1, logdir=None, context=5):
     """Install an exception handler that formats tracebacks as HTML.
 
@@ -210,7 +216,6 @@ def enable(agi=None, display=1, logdir=None, context=5):
     except_hook =  Hook(display=display, logdir=logdir,
                           context=context, agi=agi)
     sys.excepthook = except_hook
-   
+
     global handler
     handler = except_hook.handle
-    

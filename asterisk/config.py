@@ -7,7 +7,7 @@ This module provides parsing functionality for asterisk config files.
 
    import asterisk.config
    import sys
-   
+
    # load and parse the config file
    try:
       config = asterisk.config.Config('/etc/asterisk/extensions.conf')
@@ -28,7 +28,10 @@ This module provides parsing functionality for asterisk config files.
 
 import sys
 
-class ParseError(Exception): pass
+
+class ParseError(Exception):
+    pass
+
 
 class Line(object):
     def __init__(self, line, number):
@@ -68,7 +71,7 @@ class Category(Line):
 
         self.items = []
         self.comments = []
-    
+
     def get_line(self):
         if self.comment:
             return '[%s]\t;%s' % (self.name, self.comment)
@@ -86,7 +89,7 @@ class Category(Line):
     def remove(self, item):
         self.items.remove(item)
 
-    
+
 class Item(Line):
     def __init__(self, line='', num=-1, name=None, value=None):
         Line.__init__(self, line, num)
@@ -98,7 +101,7 @@ class Item(Line):
             self.value = value
         else:
             raise Exception("Must provide name or value representing an item")
-        
+
     def parse(self):
         try:
             name, value = self.line.split('=', 1)
@@ -118,6 +121,7 @@ class Item(Line):
         if self.comment:
             return '%s =%s %s\t;%s' % (self.name, self.style, self.value, self.comment)
         return '%s =%s %s' % (self.name, self.style, self.value)
+
 
 class Config(object):
     def __init__(self, filename):
@@ -159,4 +163,3 @@ class Config(object):
                 self.lines.append(item)
                 if cat: cat.append(item)
                 continue
-
