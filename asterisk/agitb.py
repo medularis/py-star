@@ -59,7 +59,8 @@ def scanvars(reader, frame, locals):
     import tokenize, keyword
     vars, lasttoken, parent, prefix, value = [], None, None, '', __UNDEF__
     for ttype, token, start, end, line in tokenize.generate_tokens(reader):
-        if ttype == tokenize.NEWLINE: break
+        if ttype == tokenize.NEWLINE:
+            break
         if ttype == tokenize.NAME and token not in keyword.kwlist:
             if lasttoken == '.':
                 if parent is not __UNDEF__:
@@ -105,8 +106,10 @@ function calls leading up to the error, in the order they occurred.
 
         def reader(lnum=[lnum]):
             highlight[lnum[0]] = 1
-            try: return linecache.getline(file, lnum[0])
-            finally: lnum[0] += 1
+            try:
+                return linecache.getline(file, lnum[0])
+            finally:
+                lnum[0] += 1
         vars = scanvars(reader, frame, locals)
 
         rows = [' %s %s' % (file, call)]
@@ -119,12 +122,16 @@ function calls leading up to the error, in the order they occurred.
 
         done, dump = {}, []
         for name, where, value in vars:
-            if name in done: continue
+            if name in done:
+                continue
             done[name] = 1
             if value is not __UNDEF__:
-                if where == 'global': name = 'global ' + name
-                elif where == 'local': name = name
-                else: name = where + name.split('.')[-1]
+                if where == 'global':
+                    name = 'global ' + name
+                elif where == 'local':
+                    name = name
+                else:
+                    name = where + name.split('.')[-1]
                 dump.append('%s = %s' % (name, pydoc.text.repr(value)))
             else:
                 dump.append(name + ' undefined')
@@ -201,7 +208,8 @@ class Hook:
 
         try:
             self.file.flush()
-        except: pass
+        except:
+            pass
 
 
 handler = Hook().handle
