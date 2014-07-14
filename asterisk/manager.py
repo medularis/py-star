@@ -64,6 +64,9 @@ EOL = '\r\n'
 
 class _Message(object):
 
+    def __init__(self):
+        self.headers = {}
+
     def has_header(self, hname):
         """Check for a header"""
         return hname in self.headers
@@ -88,10 +91,11 @@ class ManagerMessage(_Message):
     """A manager interface message"""
 
     def __init__(self, response):
+        super(ManagerMessage, self).__init__()
+
         # the raw response, straight from the horse's mouth:
         self.response = response
         self.data = ''
-        self.headers = {}
         self.multiheaders = {}
 
         # parse the response
@@ -151,6 +155,7 @@ class Event(_Message):
     """Manager interface Events, __init__ expects and 'Event' message"""
 
     def __init__(self, message):
+        super(Event, self).__init__()
 
         # store all of the event data
         self.message = message
