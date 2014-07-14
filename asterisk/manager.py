@@ -62,7 +62,8 @@ from asterisk.compat import Queue, string_types
 EOL = '\r\n'
 
 
-class _Msg(object): 
+class _Message(object):
+
     def has_header(self, hname):
         """Check for a header"""
         return hname in self.headers
@@ -78,9 +79,14 @@ class _Msg(object):
     def __repr__(self):
         return self.headers['Response']
 
+# backwards compatibilty
+_Msg = _Message
 
-class ManagerMsg(_Msg): 
+
+class ManagerMessage(_Message):
+
     """A manager interface message"""
+
     def __init__(self, response):
         # the raw response, straight from the horse's mouth:
         self.response = response
@@ -136,9 +142,14 @@ class ManagerMsg(_Msg):
                 break
         self.data = ''.join(data)
 
+# backwards compatibilty
+ManagerMsg = ManagerMessage
 
-class Event(_Msg):
+
+class Event(_Message):
+
     """Manager interface Events, __init__ expects and 'Event' message"""
+
     def __init__(self, message):
 
         # store all of the event data
@@ -386,7 +397,7 @@ class Manager(object):
                     break
 
                 # parse the data
-                message = ManagerMsg(data)
+                message = ManagerMessage(data)
 
                 # check if this is an event message
                 if message.has_header('Event'):
