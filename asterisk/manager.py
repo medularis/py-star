@@ -298,7 +298,7 @@ class Manager(object):
                 for line in self._sock:
                     line = line.decode('utf-8')
                     # check to see if this is the greeting line
-                    if not self.title and '/' in line and not ':' in line:
+                    if not self.title and '/' in line and ':' not in line:
                         # store the title of the manager we are connecting to:
                         self.title = line.split('/')[0].strip()
                         # store the version of the manager we are connecting to:
