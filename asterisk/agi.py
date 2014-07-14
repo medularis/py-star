@@ -95,7 +95,7 @@ class AGI:
     def test_hangup(self):
         """This function throws AGIHangup if we have recieved a SIGHUP"""
         if self._got_sighup:
-           raise AGISIGHUPHangup("Received SIGHUP from Asterisk")
+            raise AGISIGHUPHangup("Received SIGHUP from Asterisk")
         
     def execute(self, command, *args):
         self.test_hangup()
@@ -513,11 +513,11 @@ class AGI:
         7 Line is busy
         """
         try:
-           result = self.execute('CHANNEL STATUS', channel)
+            result = self.execute('CHANNEL STATUS', channel)
         except AGIHangup:
-           raise
+            raise
         except AGIAppError:
-           result = {'result': ('-1','')}
+            result = {'result': ('-1','')}
 
         return int(result['result'][0])
 
@@ -533,9 +533,9 @@ class AGI:
         the variable is not set, an empty string is returned.
         """
         try:
-           result = self.execute('GET VARIABLE', self._quote(name))
+            result = self.execute('GET VARIABLE', self._quote(name))
         except AGIResultHangup:
-           result = {'result': ('1', 'hangup')}
+            result = {'result': ('1', 'hangup')}
 
         res, value = result['result']
         return value
@@ -547,13 +547,13 @@ class AGI:
         the variable is not set, an empty string is returned.
         """
         try:
-           if channel:
-              result = self.execute('GET FULL VARIABLE', self._quote(name), self._quote(channel))
-           else:
-              result = self.execute('GET FULL VARIABLE', self._quote(name))
+            if channel:
+                result = self.execute('GET FULL VARIABLE', self._quote(name), self._quote(channel))
+            else:
+                result = self.execute('GET FULL VARIABLE', self._quote(name))
 
         except AGIResultHangup:
-           result = {'result': ('1', 'hangup')}
+            result = {'result': ('1', 'hangup')}
 
         res, value = result['result']
         return value

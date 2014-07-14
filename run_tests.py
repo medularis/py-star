@@ -737,7 +737,7 @@ def process_args(argv=None):
         elif k in ("-b", "--build"):
             build = 1
         elif k == "-B":
-             build = build_inplace = 1
+            build = build_inplace = 1
         elif k == "-c":
             # make sure you have a recent version of pychecker
             if not os.environ.get("PYCHECKER"):
