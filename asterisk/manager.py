@@ -250,7 +250,7 @@ class Manager(object):
         """
         cdict = cdict or {}
 
-        if not self._connected.isSet():
+        if not self.is_connected():
             raise ManagerException("Not connected")
 
         # fill in our args
@@ -300,7 +300,7 @@ class Manager(object):
         wait_for_marker = False
         eolcount = 0
         # loop while we are sill running and connected
-        while self._running.isSet() and self._connected.isSet():
+        while self._running.isSet() and self.is_connected():
             try:
                 lines = []
                 for line in self._sock:
@@ -323,7 +323,7 @@ class Manager(object):
                     # newlines until we see that marker
                     if line == EOL and not wait_for_marker:
                         multiline = False
-                        if lines or not self._connected.isSet():
+                        if lines or not self.is_connected():
                             break
                         # ignore empty lines at start
                         continue
@@ -341,14 +341,14 @@ class Manager(object):
                     if multiline and line.startswith('--END COMMAND--'):
                         wait_for_marker = False
                         multiline = False
-                    if not self._connected.isSet():
+                    if not self.is_connected():
                         break
                 else:
                     # EOF during reading
                     self._sock.close()
                     self._connected.clear()
                 # if we have a message append it to our queue
-                if lines and self._connected.isSet():
+                if lines and self.is_connected():
                     self._message_queue.put(lines)
                 else:
                     self._message_queue.put(None)
@@ -446,7 +446,7 @@ class Manager(object):
     def connect(self, host, port=5038):
         """Connect to the manager interface"""
 
-        if self._connected.isSet():
+        if self.is_connected():
             raise ManagerException('Already connected to manager')
 
         # make sure host is a string
@@ -481,7 +481,7 @@ class Manager(object):
         """Shutdown the connection to the manager"""
 
         # if we are still running, logout
-        if self._running.isSet() and self._connected.isSet():
+        if self._running.isSet() and self.is_connected():
             self.logoff()
 
         if self._running.isSet():
