@@ -6,14 +6,14 @@ import py_asterisk
 
 
 long_description = (
-    "Pyst consists of a set of interfaces and libraries to allow programming "
+    "py-Asterisk consists of a set of interfaces and libraries to allow programming "
     "of Asterisk from python. The library currently supports AGI, AMI, "
     "and the parsing of Asterisk configuration files. The library also "
     "includes debugging facilities for AGI."
 )
 
 setup(
-    name='pyst',
+    name='py-Asterisk',
     version=py_asterisk.__version__,
     description='A Python Interface to Asterisk',
     long_description=long_description,

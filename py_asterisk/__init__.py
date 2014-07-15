@@ -1,7 +1,4 @@
-""" pyst - A set of interfaces and libraries to allow programming of asterisk from python.
-
-The pyst project includes several python modules to assist in programming
-asterisk with python:
+"""py-Asterisk is a set of interfaces and libraries to program Asterisk.
 
 agi     - python wrapper for agi
 agitb   - a module to assist in agi debugging, like cgitb

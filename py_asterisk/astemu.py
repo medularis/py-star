@@ -77,7 +77,7 @@ class AsteriskEmu(object):
     """ Emulator for asterisk management interface.
         Used for unittests of asterisk.manager.
         Now factored into a standalone module for others to use in
-        unittests of programs that build on pyst's asterisk.manager.
+        unittests of programs that build on :mod:`py_asterisk.manager`.
         By default let the operating system decide the port number to
         bind to, resulting port is stored in self.port.
     """
