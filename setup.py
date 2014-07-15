@@ -2,7 +2,7 @@
 
 from distutils.core import setup
 
-import asterisk
+import py_asterisk
 
 
 long_description = (
@@ -14,7 +14,7 @@ long_description = (
 
 setup(
     name='pyst',
-    version=asterisk.__version__,
+    version=py_asterisk.__version__,
     description='A Python Interface to Asterisk',
     long_description=long_description,
     author='Karl Putland',
@@ -22,7 +22,7 @@ setup(
     maintainer='Ralf Schlatterbeck',
     maintainer_email='rsc@runtux.com',
     url='http://www.sourceforge.net/projects/pyst/',
-    packages=['asterisk'],
+    packages=['py_asterisk'],
     license='PSF, LGPL',
     platforms='Any',
     classifiers=[

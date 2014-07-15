@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 import sys
 import socket
 import unittest
-from   asterisk.manager import Manager
-from   asterisk.compat import Queue, string_types
-from   asterisk.astemu import Event, AsteriskEmu
+from py_asterisk.manager import Manager
+from py_asterisk.compat import Queue, string_types
+from py_asterisk.astemu import Event, AsteriskEmu
 
 class Test_Manager(unittest.TestCase):
     """ Test the asterisk management interface.
