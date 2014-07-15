@@ -1,2 +1,5 @@
+include LICENSE.txt
+include pyst-LICENSE.txt
+include pyst-README.rst
 include README.rst
 include MANIFEST.in
