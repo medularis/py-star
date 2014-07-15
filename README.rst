@@ -8,6 +8,20 @@ py-star: A Python Interface to Asterisk
    PSF and LGPL licenses.
 
 
+Development status
+------------------
+
+The code quality is between alpha and beta stages.
+
+
+Python compatibility
+--------------------
+
+Python 2.6 and 2.7.
+
+We also intend to make this to run on Python 3.2+ as soon as possible.
+
+
 Install
 -------
 Use ``pip``:
