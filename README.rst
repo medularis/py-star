@@ -29,3 +29,9 @@ Use ``pip``:
 .. code-block:: sh
 
     $ pip install git+ssh://git@github.com/medularis/py-asterisk.git
+
+To get the latest development (unstable) version:
+
+.. code-block:: sh
+
+    $ pip install git+ssh://git@github.com/medularis/py-asterisk.git#develop
