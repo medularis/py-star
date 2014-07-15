@@ -1,4 +1,4 @@
-""" pyst - A set of interfaces and libraries to allow programming of asterisk from python.
+"""py-star is a set of interfaces and libraries to program Asterisk.
 
 The pyst project includes several python modules to assist in programming
 asterisk with python:

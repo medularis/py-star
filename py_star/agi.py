@@ -14,7 +14,7 @@ pyvr
  'agi_language' : 'en',
  'agi_priority' : '1',
  'agi_rdnis'    : '',
- 'agi_request'  : 'pyst',
+ 'agi_request'  : 'py-star',
  'agi_type'     : 'IAX'}
 
 """

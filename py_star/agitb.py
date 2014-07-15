@@ -2,11 +2,11 @@
 
 To enable this module, do:
 
-    import asterisk.agitb, asterisk.agi
-    asterisk.agitb.enable(display = False, logdir = '/var/log/asterisk/')
+    import py_star.agitb, py_star.agi
+    py_star.agitb.enable(display = False, logdir = '/var/log/asterisk/')
 
-    agi = asterisk.agi.AGI()
-    asterisk.agitb.enable(agi, False, '/var/log/asterisk')
+    agi = py_star.agi.AGI()
+    py_star.agitb.enable(agi, False, '/var/log/asterisk')
 
 at the top of your script.  The optional arguments to enable() are:
 
