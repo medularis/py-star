@@ -1,8 +1,5 @@
 """py-star is a set of interfaces and libraries to program Asterisk.
 
-The pyst project includes several python modules to assist in programming
-asterisk with python:
-
 agi     - python wrapper for agi
 agitb   - a module to assist in agi debugging, like cgitb
 config  - a module for parsing asterisk config files

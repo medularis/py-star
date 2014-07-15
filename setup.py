@@ -19,7 +19,7 @@ setup(
     long_description=long_description,
     author='German Larrain',
     author_email='glarrain@users.noreply.github.com',
-    url='https://github.com/medularis/py-asterisk',
+    url='https://github.com/medularis/py-star',
     packages=['py_star'],
     license='PSF, LGPL',
     platforms='Any',
