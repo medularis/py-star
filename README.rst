@@ -28,10 +28,10 @@ Use ``pip``:
 
 .. code-block:: sh
 
-    $ pip install git+ssh://git@github.com/medularis/py-asterisk.git
+    $ pip install git+ssh://git@github.com/medularis/py-star.git
 
 To get the latest development (unstable) version:
 
 .. code-block:: sh
 
-    $ pip install git+ssh://git@github.com/medularis/py-asterisk.git#develop
+    $ pip install git+ssh://git@github.com/medularis/py-star.git#develop
