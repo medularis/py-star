@@ -1,5 +1,5 @@
-py-Asterisk: A Python Interface to Asterisk
-===========================================
+py-star: A Python Interface to Asterisk
+=======================================
 
 .. note::
    This software is a fork of *pyst*, hosted at

@@ -2,19 +2,19 @@
 
 from distutils.core import setup
 
-import asterisk
+import py_star
 
 
 long_description = (
-    "Pyst consists of a set of interfaces and libraries to allow programming "
+    "py-star consists of a set of interfaces and libraries to allow programming "
     "of Asterisk from python. The library currently supports AGI, AMI, "
     "and the parsing of Asterisk configuration files. The library also "
     "includes debugging facilities for AGI."
 )
 
 setup(
-    name='pyst',
-    version=asterisk.__version__,
+    name='py-star',
+    version=py_star.__version__,
     description='A Python Interface to Asterisk',
     long_description=long_description,
     author='Karl Putland',
@@ -22,7 +22,7 @@ setup(
     maintainer='Ralf Schlatterbeck',
     maintainer_email='rsc@runtux.com',
     url='http://www.sourceforge.net/projects/pyst/',
-    packages=['asterisk'],
+    packages=['py_star'],
     license='PSF, LGPL',
     platforms='Any',
     classifiers=[
