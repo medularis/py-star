@@ -23,11 +23,11 @@ We also intend to make this to run on Python 3.2+ as soon as possible.
 
 Install
 -------
-Use ``pip``:
+Use ``pip``. For the latest stable release:
 
 .. code-block:: sh
 
-    $ pip install git+ssh://git@github.com/medularis/py-star.git
+    $ pip install py-star
 
 To get the latest development (unstable) version:
 
