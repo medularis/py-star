@@ -1,4 +1,4 @@
-"""py-Asterisk is a set of interfaces and libraries to program Asterisk.
+"""py-star is a set of interfaces and libraries to program Asterisk.
 
 agi     - python wrapper for agi
 agitb   - a module to assist in agi debugging, like cgitb

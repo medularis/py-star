@@ -5,7 +5,7 @@ from signal import SIGTERM
 import socket
 from time import sleep
 
-from asterisk.compat import string_types
+from py_star.compat import string_types
 
 
 class Event(dict):
@@ -75,9 +75,9 @@ class Event(dict):
 
 class AsteriskEmu(object):
     """ Emulator for asterisk management interface.
-        Used for unittests of asterisk.manager.
+        Used for unittests of :mod:`py_star.manager`.
         Now factored into a standalone module for others to use in
-        unittests of programs that build on :mod:`py_asterisk.manager`.
+        unittests of programs that build on :mod:`py_star.manager`.
         By default let the operating system decide the port number to
         bind to, resulting port is stored in self.port.
     """

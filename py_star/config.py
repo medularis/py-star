@@ -5,13 +5,13 @@ Parse Asterisk configuration files.
 
 This module provides parsing functionality for asterisk config files.
 
-   import asterisk.config
+   import py_star.config
    import sys
 
    # load and parse the config file
    try:
-      config = asterisk.config.Config('/etc/asterisk/extensions.conf')
-   except asterisk.config.ParseError, (line, reason):
+      config = py_star.config.Config('/etc/asterisk/extensions.conf')
+   except py_star.config.ParseError, (line, reason):
       print "Parse Error line: %s: %s" % (line, reason)
       sys.exit(1)
    except IOError, reason:

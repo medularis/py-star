@@ -5,7 +5,7 @@ Python Interface for Asterisk Manager
 
 This module provides a Python API for interfacing with the asterisk manager.
 
-   import asterisk.manager
+   import py_star.manager
    import sys
 
    def handle_shutdown(event, manager):
@@ -16,7 +16,7 @@ This module provides a Python API for interfacing with the asterisk manager.
    def handle_event(event, manager):
       print ("Received event: %s" % event.name)
 
-   manager = asterisk.manager.Manager()
+   manager = py_star.manager.Manager()
    try:
        # connect to the manager
        try:
@@ -31,14 +31,14 @@ This module provides a Python API for interfacing with the asterisk manager.
            response = manager.status()
 
            manager.logoff()
-       except asterisk.manager.ManagerSocketException as err:
+       except py_star.manager.ManagerSocketException as err:
           errno, reason = err
           print ("Error connecting to the manager: %s" % reason)
           sys.exit(1)
-       except asterisk.manager.ManagerAuthException as reason:
+       except py_star.manager.ManagerAuthException as reason:
           print ("Error logging in to the manager: %s" % reason)
           sys.exit(1)
-       except asterisk.manager.ManagerException as reason:
+       except py_star.manager.ManagerException as reason:
           print ("Error: %s" % reason)
           sys.exit(1)
 
@@ -61,7 +61,7 @@ import sys
 import threading
 from time import sleep
 
-from asterisk.compat import Queue, string_types
+from py_star.compat import Queue, string_types
 
 EOL = '\r\n'
 
