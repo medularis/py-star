@@ -53,11 +53,16 @@ and submit patches.
 """
 from __future__ import absolute_import, print_function, unicode_literals
 
+import logging
 import os
 import socket
+import sys
 import threading
 
 from py_star.compat import Queue, string_types
+from . import compat_six as six
+
+logger = logging.getLogger(__name__)
 
 EOL = '\r\n'
 
@@ -207,6 +212,7 @@ class Manager(object):
         self.message_thread = threading.Thread(target=self.message_loop)
         self.event_dispatch_thread = threading.Thread(target=self.event_dispatch)
 
+        # TODO: this can be passed when threads are created
         self.message_thread.setDaemon(True)
         self.event_dispatch_thread.setDaemon(True)
 
@@ -282,6 +288,7 @@ class Manager(object):
         try:
             self._sock.write(command.encode('utf-8'))
             self._sock.flush()
+            logger.debug("Wrote to socket file this command:\n%s" % command)
         except socket.error as err:
             errno, reason = err
             raise ManagerSocketException(errno, reason)
@@ -318,6 +325,8 @@ class Manager(object):
                         # fake message header
                         lines.append('Response: Generated Header\r\n')
                         lines.append(line)
+                        logger.debug("Fake message header. Will exit the "
+                                     "socket file iteration loop")
                         break
                     # If the line is EOL marker we have a complete message.
                     # Some commands are broken and contain a \n\r\n
@@ -328,6 +337,8 @@ class Manager(object):
                     if line == EOL and not wait_for_marker:
                         multiline = False
                         if lines or not self.is_connected():
+                            logger.info(
+                                "Will exit the socket file iteration loop")
                             break
                         # ignore empty lines at start
                         continue
@@ -346,10 +357,14 @@ class Manager(object):
                         wait_for_marker = False
                         multiline = False
                     if not self.is_connected():
+                        logger.info("Not connected. Will exit the "
+                                    "socket file iteration loop")
                         break
                 else:
                     # EOF during reading
+                    logger.error("Problem reading socket file")
                     self._sock.close()
+                    logger.info("Closed socket file")
                     self._connected.clear()
                 # if we have a message append it to our queue
                 if lines and self.is_connected():
@@ -357,7 +372,9 @@ class Manager(object):
                 else:
                     self._message_queue.put(None)
             except socket.error:
+                logger.exception("Socket error")
                 self._sock.close()
+                logger.info("Closed socket file")
                 self._connected.clear()
                 self._message_queue.put(None)
 
@@ -419,9 +436,13 @@ class Manager(object):
                     self._response_queue.put(message)
                 else:
                     self._response_queue.put(None)
-                    print ('No clue what we got\n%s' % message.data)
+                    logger.error("No clue what we got\n%s" % message.data)
+        except Exception:
+            logger.exception("Exception in the message loop")
+            six.reraise(*sys.exc_info())
         finally:
             # wait for our data receiving thread to exit
+            logger.debug("Waiting for our data-receiving thread to exit")
             t.join()
 
     def event_dispatch(self):
@@ -486,18 +507,22 @@ class Manager(object):
 
         # if we are still running, logout
         if self.is_running() and self.is_connected():
+            logger.debug("Logoff before closing (we are running and connected)")
             self.logoff()
 
         if self.is_running():
             # put None in the message_queue to kill our threads
+            logger.debug("Put None in the `message_queue` to kill our threads")
             self._message_queue.put(None)
 
             # wait for the event thread to exit
+            logger.debug("Waiting for `message_thread` to exit")
             self.message_thread.join()
 
             # make sure we do not join our self (when close is called from event handlers)
             if threading.currentThread() != self.event_dispatch_thread:
                 # wait for the dispatch thread to exit
+                logger.debug("Waiting for `event_dispatch_thread` to exit")
                 self.event_dispatch_thread.join()
 
         self._running.clear()
