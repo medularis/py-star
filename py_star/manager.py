@@ -59,8 +59,8 @@ import socket
 import sys
 import threading
 
-from py_star.compat import Queue, string_types
 from . import compat_six as six
+from six.moves import queue
 
 logger = logging.getLogger(__name__)
 
@@ -195,9 +195,9 @@ class Manager(object):
         self.pid = os.getpid()
 
         # our queues
-        self._message_queue = Queue()
-        self._response_queue = Queue()
-        self._event_queue = Queue()
+        self._message_queue = queue.Queue()
+        self._response_queue = queue.Queue()
+        self._event_queue = queue.Queue()
 
         # callbacks for events
         self._event_callbacks = {}
@@ -475,7 +475,7 @@ class Manager(object):
             raise ManagerException('Already connected to manager')
 
         # make sure host is a string
-        assert isinstance(host, string_types)
+        assert isinstance(host, six.string_types)
 
         port = int(port)  # make sure port is an int
 

@@ -3,8 +3,10 @@ from __future__ import unicode_literals
 import sys
 import socket
 import unittest
+
+from py_star import compat_six as six
+from six.moves import queue
 from py_star.manager import Manager
-from py_star.compat import Queue, string_types
 from py_star.astemu import Event, AsteriskEmu
 
 class Test_Manager(unittest.TestCase):
@@ -24,7 +26,7 @@ class Test_Manager(unittest.TestCase):
         self.childpid = None
         self.events   = []
         self.evcount  = 0
-        self.queue    = Queue()
+        self.queue    = queue.Queue()
 
     def tearDown(self):
         self.close()
@@ -45,7 +47,7 @@ class Test_Manager(unittest.TestCase):
         for k, v in event.items():
             if k == 'CONTENT':
                 self.assertEqual(r_event.data, v)
-            elif isinstance(v, string_types):
+            elif isinstance(v, six.string_types):
                 self.assertEqual(r_event[k], v)
             else:
                 self.assertEqual(r_event[k], v[-1])

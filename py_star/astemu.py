@@ -5,7 +5,7 @@ from signal import SIGTERM
 import socket
 from time import sleep
 
-from py_star.compat import string_types
+from . import compat_six as six
 
 
 class Event(dict):
@@ -55,7 +55,7 @@ class Event(dict):
             if k == 'CONTENT':
                 ret.append(v)
             else :
-                if isinstance(v, string_types):
+                if isinstance(v, six.string_types):
                     ret.append (": ".join ((k, v)))
                 else:
                     for x in v:
