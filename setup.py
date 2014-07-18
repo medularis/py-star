@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 import py_star
 
@@ -21,7 +24,7 @@ setup(
     author_email='glarrain@users.noreply.github.com',
     url='https://github.com/medularis/py-star',
     packages=['py_star'],
-    license='PSF, LGPL',
+    license='3-clause BSD',
     platforms='Any',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -35,7 +38,8 @@ setup(
         'Topic :: Communications :: Internet Phone',
         'Topic :: Communications :: Telephony',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        'License :: OSI Approved :: Python Software Foundation License',
-        'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
+        # the FSF refers to it as "Modified BSD License". Other names include
+        # "New BSD", "revised BSD", "BSD-3", or "3-clause BSD"
+        'License :: OSI Approved :: BSD License',
     ]
 )

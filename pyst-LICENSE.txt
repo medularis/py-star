@@ -1,0 +1,14 @@
+As of March 15th, 2014, there is no license file in the repository of 'pyst'.
+
+However, in the project page (http://sourceforge.net/projects/pyst/) it
+says its license is the "License GNU Library or Lesser General Public License
+version 2.0 (LGPLv2)".
+In the file 'setup.py' it says the licenses are:
+
+* Python Software Foundation License
+* GNU Library or Lesser General Public License (LGPL)
+
+For more information about the LGPL, see:
+
+* https://www.gnu.org/licenses/lgpl-2.0.txt
+* https://www.gnu.org/copyleft/lesser.html
