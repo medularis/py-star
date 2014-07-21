@@ -202,7 +202,7 @@ class Manager(object):
         # callbacks for events
         self._event_callbacks = {}
 
-        self._reswaiting = []  # who is waiting for a response
+        self._response_waiters = []  # those who are waiting for a response
 
         # sequence stuff
         self._seqlock = threading.Lock()
@@ -293,9 +293,9 @@ class Manager(object):
             errno, reason = err
             raise ManagerSocketException(errno, reason)
 
-        self._reswaiting.insert(0, 1)
+        self._response_waiters.insert(0, 1)
         response = self._response_queue.get()
-        self._reswaiting.pop(0)
+        self._response_waiters.pop(0)
 
         if not response:
             raise ManagerSocketException(0, 'Connection Terminated')
@@ -431,7 +431,7 @@ class Manager(object):
                                 "queues and then break this loop", repr(data))
                     # notify the other queues
                     self._event_queue.put(None)
-                    for waiter in self._reswaiting:
+                    for waiter in self._response_waiters:
                         self._response_queue.put(None)
                     break
 
