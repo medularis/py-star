@@ -336,10 +336,18 @@ class Manager(object):
                     # newlines until we see that marker
                     if line == EOL and not wait_for_marker:
                         multiline = False
-                        if lines or not self.is_connected():
-                            logger.info(
-                                "Will exit the socket file iteration loop")
+
+                        # we split the break conditions because they are of very
+                        # different nature and we'd like more fine-grained logs
+                        if lines:
+                            logger.debug("Have %s lines. Will exit the socket "
+                                         "file iteration loop" % len(lines))
                             break
+                        if not self.is_connected():
+                            logger.warning("Not connected. Will exit the "
+                                           "socket file iteration loop")
+                            break
+
                         # ignore empty lines at start
                         continue
                     lines.append(line)
@@ -419,6 +427,8 @@ class Manager(object):
 
                 # if we got None as our message we are done
                 if not data:
+                    logger.info("Got empty data: %s. Will notify the other "
+                                "queues and then break this loop", repr(data))
                     # notify the other queues
                     self._event_queue.put(None)
                     for waiter in self._reswaiting:
@@ -455,6 +465,7 @@ class Manager(object):
 
             # if we got None as an event, we are finished
             if not ev:
+                logger.info("Got empty event: %s. Will break dispatch loop")
                 break
 
             # dispatch our events
