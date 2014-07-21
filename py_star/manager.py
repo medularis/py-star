@@ -465,7 +465,8 @@ class Manager(object):
 
             # if we got None as an event, we are finished
             if not ev:
-                logger.info("Got empty event: %s. Will break dispatch loop")
+                logger.info(
+                    "Got empty event: %s. Will break dispatch loop" % repr(ev))
                 break
 
             # dispatch our events
