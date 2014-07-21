@@ -336,10 +336,18 @@ class Manager(object):
                     # newlines until we see that marker
                     if line == EOL and not wait_for_marker:
                         multiline = False
-                        if lines or not self.is_connected():
-                            logger.info(
-                                "Will exit the socket file iteration loop")
+
+                        # we split the break conditions because they are of very
+                        # different nature and we'd like more fine-grained logs
+                        if lines:
+                            logger.debug("Have %s lines. Will exit the socket "
+                                         "file iteration loop" % len(lines))
                             break
+                        if not self.is_connected():
+                            logger.warning("Not connected. Will exit the "
+                                           "socket file iteration loop")
+                            break
+
                         # ignore empty lines at start
                         continue
                     lines.append(line)
