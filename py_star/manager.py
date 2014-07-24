@@ -523,7 +523,13 @@ class Manager(object):
         self.event_dispatch_thread.start()
 
         # get our initial connection response
-        return self._response_queue.get()
+        response = self._response_queue.get()
+
+        # if we got the sentinel value as a response then something went awry
+        if response is self._sentinel:
+            raise ManagerSocketException(0, "Connection Terminated")
+
+        return response
 
     def close(self):
         """Shutdown the connection to the manager"""
