@@ -216,6 +216,10 @@ class Manager(object):
         self.message_thread.setDaemon(True)
         self.event_dispatch_thread.setDaemon(True)
 
+        # special sentinel value: when placed in a queue, its consumers
+        # know they have to terminate
+        self._sentinel = object()
+
     def __del__(self):
         self.close()
 
@@ -297,7 +301,8 @@ class Manager(object):
         response = self._response_queue.get()
         self._response_waiters.pop(0)
 
-        if not response:
+        # if we got the sentinel value as a response we are done
+        if response is self._sentinel:
             raise ManagerSocketException(0, 'Connection Terminated')
 
         return response
@@ -375,16 +380,18 @@ class Manager(object):
                     logger.info("Closed socket file")
                     self._connected.clear()
                 # if we have a message append it to our queue
+                # else notify `message_loop` that it has to finish
                 if lines and self.is_connected():
                     self._message_queue.put(lines)
                 else:
-                    self._message_queue.put(None)
+                    self._message_queue.put(self._sentinel)
             except socket.error:
                 logger.exception("Socket error")
                 self._sock.close()
                 logger.info("Closed socket file")
                 self._connected.clear()
-                self._message_queue.put(None)
+                # notify `message_loop` that it has to finish
+                self._message_queue.put(self._sentinel)
 
     def register_event(self, event, function):
         """
@@ -425,14 +432,16 @@ class Manager(object):
                 # get/wait for messages
                 data = self._message_queue.get()
 
-                # if we got None as our message we are done
-                if not data:
-                    logger.info("Got empty data: %s. Will notify the other "
-                                "queues and then break this loop", repr(data))
-                    # notify the other queues
-                    self._event_queue.put(None)
+                # if we got the sentinel value as our message we are done
+                # (have to notify `_event_queue` once, and `_response_queue`
+                #  as many times as the length of `_response_waiters`)
+                if data is self._sentinel:
+                    logger.info("Got sentinel object. Will notify the other "
+                                "queues and then break this loop")
+                    # notify `event_dispatch` that it has to finish
+                    self._event_queue.put(self._sentinel)
                     for waiter in self._response_waiters:
-                        self._response_queue.put(None)
+                        self._response_queue.put(self._sentinel)
                     break
 
                 # parse the data
@@ -445,7 +454,9 @@ class Manager(object):
                 elif message.has_header('Response'):
                     self._response_queue.put(message)
                 else:
-                    self._response_queue.put(None)
+                    # notify `_response_queue`'s consumer (`send_action`)
+                    # that it has to finish
+                    self._response_queue.put(self._sentinel)
                     logger.error("No clue what we got\n%s" % message.data)
         except Exception:
             logger.exception("Exception in the message loop")
@@ -463,10 +474,9 @@ class Manager(object):
             # get/wait for an event
             ev = self._event_queue.get()
 
-            # if we got None as an event, we are finished
-            if not ev:
-                logger.info(
-                    "Got empty event: %s. Will break dispatch loop" % repr(ev))
+            # if we got the sentinel value as an event we are done
+            if ev is self._sentinel:
+                logger.info("Got sentinel object. Will break dispatch loop")
                 break
 
             # dispatch our events
@@ -512,7 +522,13 @@ class Manager(object):
         self.event_dispatch_thread.start()
 
         # get our initial connection response
-        return self._response_queue.get()
+        response = self._response_queue.get()
+
+        # if we got the sentinel value as a response then something went awry
+        if response is self._sentinel:
+            raise ManagerSocketException(0, "Connection Terminated")
+
+        return response
 
     def close(self):
         """Shutdown the connection to the manager"""
@@ -523,9 +539,9 @@ class Manager(object):
             self.logoff()
 
         if self.is_running():
-            # put None in the message_queue to kill our threads
-            logger.debug("Put None in the `message_queue` to kill our threads")
-            self._message_queue.put(None)
+            # notify `message_loop` that it has to finish
+            logger.debug("Notify message loop that it has to finish")
+            self._message_queue.put(self._sentinel)
 
             # wait for the event thread to exit
             logger.debug("Waiting for `message_thread` to exit")
