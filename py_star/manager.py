@@ -436,8 +436,8 @@ class Manager(object):
                 # (have to notify `_event_queue` once, and `_response_queue`
                 #  as many times as the length of `_response_waiters`)
                 if data is self._sentinel:
-                    logger.info("Got empty data: %s. Will notify the other "
-                                "queues and then break this loop", repr(data))
+                    logger.info("Got sentinel object. Will notify the other "
+                                "queues and then break this loop")
                     # notify `event_dispatch` that it has to finish
                     self._event_queue.put(self._sentinel)
                     for waiter in self._response_waiters:
@@ -476,8 +476,7 @@ class Manager(object):
 
             # if we got the sentinel value as an event we are done
             if ev is self._sentinel:
-                logger.info(
-                    "Got empty event: %s. Will break dispatch loop" % repr(ev))
+                logger.info("Got sentinel object. Will break dispatch loop")
                 break
 
             # dispatch our events
