@@ -381,9 +381,14 @@ class Manager(object):
                     self._connected.clear()
                 # if we have a message append it to our queue
                 # else notify `message_loop` that it has to finish
-                if lines and self.is_connected():
-                    self._message_queue.put(lines)
+                if lines:
+                    if self.is_connected():
+                        self._message_queue.put(lines)
+                    else:
+                        logger.warning("Received lines but are not connected")
+                        self._message_queue.put(self._sentinel)
                 else:
+                    logger.warning("No lines received")
                     self._message_queue.put(self._sentinel)
             except socket.error:
                 logger.exception("Socket error")
