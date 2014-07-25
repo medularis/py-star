@@ -386,18 +386,24 @@ class Manager(object):
                     if self.is_connected():
                         self._message_queue.put(lines)
                     else:
-                        logger.warning("Received lines but are not connected")
+                        msg = "Received lines but are not connected"
+                        logger.warning(msg)
                         self._message_queue.put(self._sentinel)
+                        self.errors_in_threads.put(msg)
                 else:
-                    logger.warning("No lines received")
+                    msg = "No lines received"
+                    logger.warning(msg)
                     self._message_queue.put(self._sentinel)
+                    self.errors_in_threads.put(msg)
             except socket.error:
-                logger.exception("Socket error")
+                msg = "Socket error"
+                logger.exception(msg)
                 self._sock.close()
                 logger.info("Closed socket file")
                 self._connected.clear()
                 # notify `message_loop` that it has to finish
                 self._message_queue.put(self._sentinel)
+                self.errors_in_threads.put(msg)
 
     def register_event(self, event, function):
         """
@@ -462,8 +468,10 @@ class Manager(object):
                 else:
                     # notify `_response_queue`'s consumer (`send_action`)
                     # that it has to finish
+                    msg = "No clue what we got\n%s" % message.data
+                    logger.error(msg)
                     self._response_queue.put(self._sentinel)
-                    logger.error("No clue what we got\n%s" % message.data)
+                    self.errors_in_threads.put(msg)
         except Exception:
             logger.exception("Exception in the message loop")
             six.reraise(*sys.exc_info())
