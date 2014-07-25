@@ -198,6 +198,7 @@ class Manager(object):
         self._message_queue = queue.Queue()
         self._response_queue = queue.Queue()
         self._event_queue = queue.Queue()
+        self.errors_in_threads = queue.Queue()
 
         # callbacks for events
         self._event_callbacks = {}
