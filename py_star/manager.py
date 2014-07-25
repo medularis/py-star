@@ -183,6 +183,20 @@ class Event(_Message):
 
 
 class Manager(object):
+
+    """Manager interface.
+
+    Queue :attr:`errors_in_threads` stores messages about errors that
+    happened in threads execution. Because there is no point in raising
+    exceptions in threads, this is a way of letting the users of this
+    class know that something bad has happened.
+
+    .. warning::
+       Errors happening in threads must be logged **and** a corresponding
+       message added to :attr:`errors_in_threads`.
+
+    """
+
     def __init__(self):
         self._sock = None     # our socket
         self.title = None     # set by received greeting
@@ -198,6 +212,7 @@ class Manager(object):
         self._message_queue = queue.Queue()
         self._response_queue = queue.Queue()
         self._event_queue = queue.Queue()
+        self.errors_in_threads = queue.Queue()
 
         # callbacks for events
         self._event_callbacks = {}
@@ -381,17 +396,28 @@ class Manager(object):
                     self._connected.clear()
                 # if we have a message append it to our queue
                 # else notify `message_loop` that it has to finish
-                if lines and self.is_connected():
-                    self._message_queue.put(lines)
+                if lines:
+                    if self.is_connected():
+                        self._message_queue.put(lines)
+                    else:
+                        msg = "Received lines but are not connected"
+                        logger.warning(msg)
+                        self._message_queue.put(self._sentinel)
+                        self.errors_in_threads.put(msg)
                 else:
+                    msg = "No lines received"
+                    logger.warning(msg)
                     self._message_queue.put(self._sentinel)
+                    self.errors_in_threads.put(msg)
             except socket.error:
-                logger.exception("Socket error")
+                msg = "Socket error"
+                logger.exception(msg)
                 self._sock.close()
                 logger.info("Closed socket file")
                 self._connected.clear()
                 # notify `message_loop` that it has to finish
                 self._message_queue.put(self._sentinel)
+                self.errors_in_threads.put(msg)
 
     def register_event(self, event, function):
         """
@@ -456,8 +482,10 @@ class Manager(object):
                 else:
                     # notify `_response_queue`'s consumer (`send_action`)
                     # that it has to finish
+                    msg = "No clue what we got\n%s" % message.data
+                    logger.error(msg)
                     self._response_queue.put(self._sentinel)
-                    logger.error("No clue what we got\n%s" % message.data)
+                    self.errors_in_threads.put(msg)
         except Exception:
             logger.exception("Exception in the message loop")
             six.reraise(*sys.exc_info())
