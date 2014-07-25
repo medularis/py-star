@@ -8,4 +8,4 @@ manager - a module for interacting with the asterisk manager interface
 """
 
 __all__ = ['agi', 'agitb', 'config', 'manager']
-__version__ = '0.1.1.dev3'
+__version__ = '0.1.2.dev1'
