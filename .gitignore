@@ -13,5 +13,6 @@
 *~
 .#*
 .*.swp
+*.egg-info/
 .DS_store
 .idea/
