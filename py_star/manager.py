@@ -183,6 +183,20 @@ class Event(_Message):
 
 
 class Manager(object):
+
+    """Manager interface.
+
+    Queue :attr:`errors_in_threads` stores messages about errors that
+    happened in threads execution. Because there is no point in raising
+    exceptions in threads, this is a way of letting the users of this
+    class know that something bad has happened.
+
+    .. warning::
+       Errors happening in threads must be logged **and** a corresponding
+       message added to :attr:`errors_in_threads`.
+
+    """
+
     def __init__(self):
         self._sock = None     # our socket
         self.title = None     # set by received greeting
